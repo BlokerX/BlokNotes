@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:BlokNotes.ViewModels"
+             x:Class="BlokNotes.Views.NoteEditPage">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:NoteViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Entry Text="{Binding NoteTitle}"
+                       Placeholder="Tytuł"
+                       FontSize="Medium"
+                       FontAttributes="Bold"
+                       TextChanged="Note_TextChanged"/>
+                <Editor Text="{Binding NoteText}"
+                        Placeholder="Miejsce na Twoją notatkę..."
+                        AutoSize="TextChanges"
+                        FontSize="Medium"
+                        TextChanged="Note_TextChanged"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+    
+</ContentPage>
