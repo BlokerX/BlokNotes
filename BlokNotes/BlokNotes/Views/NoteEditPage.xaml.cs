@@ -13,9 +13,20 @@ namespace BlokNotes.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NoteEditPage : ContentPage
     {
+        public event EventHandler ClosePage;
         public NoteEditPage()
         {
             InitializeComponent();
+        }
+
+        public NoteEditPage(ref EventHandler _event) : this()
+        {
+            ClosePage = _event;
+        }
+
+        public NoteEditPage(ViewModels.NoteViewModel model, ref EventHandler _event) : this(model)
+        {
+            ClosePage = _event;
         }
 
         public NoteEditPage(ViewModels.NoteViewModel model) : this()
@@ -25,10 +36,24 @@ namespace BlokNotes.Views
 
         private void Note_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var nvm = (ViewModels.NoteViewModel)this.BindingContext;
-            string text = nvm.ToSerializeModel().ConvertToJson();
-            string path = nvm.FileName;
+            var vm = (ViewModels.NoteViewModel)this.BindingContext;
+
+            if (vm.NoteTitle == string.Empty && vm.NoteText == string.Empty)
+                return;
+
+            string text = vm.ToSerializeModel().ConvertToJson();
+            string path = vm.FileName;
             GlobalSettings.OnSave_Invoke(path, text);
+        }
+
+        private void DeleteButton_Clicked(object sender, EventArgs e)
+        {
+            var vm = (ViewModels.NoteViewModel)BindingContext;
+            vm.NoteTitle = string.Empty;
+            vm.NoteText = string.Empty;
+            GlobalSettings.DeleteFile(Path.Combine(GlobalSettings.SaveNotesPath, vm.FileName));
+            ClosePage?.Invoke(sender, e);
+            this.Navigation.PopAsync();
         }
     }
 }

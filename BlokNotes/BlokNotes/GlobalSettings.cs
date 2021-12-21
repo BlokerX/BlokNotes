@@ -31,6 +31,20 @@ namespace BlokNotes
             return File.ReadAllText(path);
         }
 
+        public static bool DeleteFile(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public delegate List<string> GetFilesDelegate(string path);
         public static GetFilesDelegate GetFiles;
 

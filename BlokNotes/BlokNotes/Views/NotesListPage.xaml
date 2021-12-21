@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BlokNotes.Views.NotesListPage">
     <Shell.TitleView>
-        <Button Text="+" 
-                Clicked="AddNoteButton_Clicked"
-                TextColor="White"
-                HorizontalOptions="Start"
-                VerticalOptions="Fill"/>
+        <Grid>
+            <Button Text="+"
+                    FontSize="Title"
+                    Clicked="AddNoteButton_Clicked"
+                    TextColor="White"
+                    HorizontalOptions="End"
+                    VerticalOptions="Fill"/>
+        </Grid>
     </Shell.TitleView>
 
     <ScrollView>
@@ -21,25 +24,31 @@
                 <!--Built in Cells-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding NoteTitle}"
+                        <!--TextCell Text="{Binding NoteTitle}"
                       Detail="{Binding NoteTextShort}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <!--ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout>
-                        <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-                        <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate-->
+                <ListView.ItemTemplate>
+                <DataTemplate-->
+                        <ViewCell>
+                            <Grid>
+
+                                <StackLayout>
+                                    <Label Text="{Binding NoteTitle}" 
+                                    Style="{DynamicResource ListItemTextStyle}" />
+                                    <Label Text="{Binding NoteTextShort}"/>
+                                </StackLayout>
+
+                                <Button Text="Usuń" Clicked="DeleteNoteButton_Clicked"
+                                        HorizontalOptions="End"/>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
 
-            <Button Text="Add note" 
+            <Button Text="Add note"
                 Clicked="AddNoteButton_Clicked"
                 TextColor="White"
                 BackgroundColor="Aqua"

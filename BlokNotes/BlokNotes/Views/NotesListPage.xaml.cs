@@ -18,13 +18,26 @@ namespace BlokNotes.Views
     {
         public ObservableCollection<NoteViewModel> Items { get; set; }
 
+        public event EventHandler BackLoad;
+
         public NotesListPage()
         {
             InitializeComponent();
+            LoadItems();
+            BackLoad += NotesListPage_BackLoad;
+        }
 
+        private void NotesListPage_BackLoad(object sender, EventArgs e)
+        {
+            LoadItems();
+        }
+
+        private void LoadItems()
+        {
+            Items?.Clear();
             Items = new ObservableCollection<NoteViewModel>();
 
-            var files = GlobalSettings.GetFiles(GlobalSettings.SaveNotesPath); //todo tu wyskakuje exception
+            var files = GlobalSettings.GetFiles(GlobalSettings.SaveNotesPath);
             foreach (var file in files)
             {
                 string tmp = "";
@@ -50,7 +63,7 @@ namespace BlokNotes.Views
             Debug.WriteLine("An item was Tapped");
 #endif
 
-            await Navigation.PushAsync(new NoteEditPage(e.Item as NoteViewModel));
+            await Navigation.PushAsync(new NoteEditPage(e.Item as NoteViewModel, ref BackLoad));
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
@@ -80,7 +93,14 @@ namespace BlokNotes.Views
             Debug.WriteLine("A note was Added");
 #endif
 
-            await Navigation.PushAsync(new NoteEditPage(Items.Last()));
+            await Navigation.PushAsync(new NoteEditPage(Items.Last(), ref BackLoad));
+        }
+
+        private void DeleteNoteButton_Clicked(object sender, EventArgs e)
+        {
+            var nvm = (NoteViewModel)((Button)sender).BindingContext;
+            GlobalSettings.DeleteFile(Path.Combine(GlobalSettings.SaveNotesPath, nvm.FileName));
+            LoadItems();
         }
     }
 }

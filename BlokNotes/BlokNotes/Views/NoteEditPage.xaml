@@ -2,17 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:BlokNotes.ViewModels"
              x:Class="BlokNotes.Views.NoteEditPage">
-    
+
     <ContentPage.BindingContext>
         <viewmodels:NoteViewModel/>
     </ContentPage.BindingContext>
+
+    <Shell.TitleView>
+        <Grid>
+
+            <Button Text="Delete"
+                VerticalOptions="Fill"
+                HorizontalOptions="End"
+                Clicked="DeleteButton_Clicked"/>
+
+        </Grid>
+    </Shell.TitleView>
 
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
                 <Entry Text="{Binding NoteTitle}"
                        Placeholder="Tytuł"
-                       FontSize="Medium"
+                       FontSize="Title"
                        FontAttributes="Bold"
                        TextChanged="Note_TextChanged"/>
                 <Editor Text="{Binding NoteText}"
@@ -20,8 +31,11 @@
                         AutoSize="TextChanges"
                         FontSize="Medium"
                         TextChanged="Note_TextChanged"/>
+                <Button Text="Delete"
+                        HorizontalOptions="Fill"
+                        Clicked="DeleteButton_Clicked"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
-    
+
 </ContentPage>
